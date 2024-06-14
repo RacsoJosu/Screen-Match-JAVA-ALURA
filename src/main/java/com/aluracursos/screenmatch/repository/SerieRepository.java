@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SerieRepository extends JpaRepository<Serie,Long > {
+    Optional<Serie> findById(Long id);
     Optional<Serie> findByTituloContainsIgnoreCase (String title);
     List<Serie> findTop5ByOrderByEvaluacionDesc();
     List<Serie> findByGenero(Categoria categoria);
@@ -28,5 +29,19 @@ public interface SerieRepository extends JpaRepository<Serie,Long > {
     List<Episodio> top5Episodios();
     @Query(value="SELECT e FROM  Serie s JOIN s.episodios e WHERE s = :serie ORDER BY e.evaluacion DESC LIMIT 5")
     List<Episodio> top5EpisodiosPorSerie(Serie serie);
+
+    @Query(value="SELECT s FROM  Serie s  JOIN s.episodios e GROUP BY s ORDER BY MAX(e.fechaDeLanzamiento) DESC LIMIT 10 ")
+    List<Serie> seriesMasRecientes();
+
+    @Query(value="SELECT e FROM  Serie s JOIN s.episodios e WHERE s = :serie")
+    List<Episodio> episodiosPorSerie(Serie serie);
+
+    @Query(value="SELECT e FROM  Serie s JOIN s.episodios e WHERE s = :serie AND e.temporada = :temporada")
+    List<Episodio> episodiosPorSerieTemporada(Serie serie, int temporada);
+
+    //@Query(value = "SELECT e FROM Serie s WHERE s.genero = :genero")
+
+
+
 
 }

@@ -49,6 +49,14 @@ public class Episodio {
 
     }
 
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
     public Integer getTemporada() {
         return temporada;
     }
